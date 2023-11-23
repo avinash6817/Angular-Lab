@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Autocomplete Search</title>
+</head>
+<body>
+  <input id="searchInput" type="text" onkeyup="autoCompletes()">
+  <ul id="autocompleteResults"></ul>
+
+  <script>
+    function autoCompletes() {
+      const searchInput = document.getElementById("searchInput");
+      const autocompleteResults = document.getElementById("autocompleteResults");
+      autocompleteResults.innerHTML = ''; 
+
+      const searchText = searchInput.value.toLowerCase();
+
+
+      const suggestions = ["apple", "banana", "cherry", "date", "grape"];
+
+      suggestions.forEach(suggestion => {
+        if (suggestion.includes(searchText)) {
+          const li = document.createElement("li");
+          li.textContent = suggestion;
+          autocompleteResults.appendChild(li);
+        }
+      });
+    }
+  </script>
+</body>
+</html>

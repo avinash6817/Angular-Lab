@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Character Movement</title>
+</head>
+<body>
+  <div id="character"></div>
+
+  <script>
+    const character = document.getElementById("character");
+    let posX = 0;
+    let posY = 0;
+
+    document.onkeydown = function(event) {
+      // Arrow key codes: 37 (left), 38 (up), 39 (right), 40 (down)
+      switch (event.keyCode) {
+        case 37:
+          posX -= 50; // Move left
+          break;
+        case 38:
+          posY -= 50; // Move up
+          break;
+        case 39:
+          posX += 50; // Move right
+          break;
+        case 40:
+          posY += 50; // Move down
+          break;
+      }
+
+      character.style.left = posX + "px";
+      character.style.top = posY + "px";
+    };
+  </script>
+
+  <style>
+    #character {
+      width: 100px;
+      height: 100px;
+      background-color: blue;
+      position: absolute;
+    }
+  </style>
+</body>
+</html>

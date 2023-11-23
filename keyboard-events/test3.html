@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Character Counter</title>
+</head>
+<body>
+  <textarea id="textInput" onkeypress="countCharacters()"></textarea>
+  <div id="charCount">Characters: 0</div>
+
+  <script>
+    function countCharacters() {
+      const textInput = document.getElementById("textInput");
+      const charCount = document.getElementById("charCount");
+      charCount.textContent = "Characters: " + textInput.value.length;
+    }
+  </script>
+</body>
+</html>

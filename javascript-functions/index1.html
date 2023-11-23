@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nested Functions</title>
+</head>
+<body>
+    <input type="text" id="name" placeholder="Enter the name">
+    <br>
+    <br>
+    <input type="number" id="reg" placeholder="Enter the reg">
+    <br>
+    <br>
+    <input type="submit" value="Click To Show Student Details" onclick="parentFun()">
+    <br>
+    <br>
+
+    <p id="demo"></p>
+    
+    
+    <script>
+        var stdName = document.getElementById("name");
+        var regNo = document.getElementById("reg");
+        var setText = document.getElementById("demo");
+
+        function Function1(n){
+            function Function2(r){
+                return n + " " + r
+            }
+            return Function2;
+        }
+
+        function parentFun(){
+            setText.innerText = "Student Details : " + Function1(stdName.value)(regNo.value);
+        }
+    </script>
+</body>
+</html>

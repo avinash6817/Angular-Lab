@@ -1,0 +1,22 @@
+<!-- <app-ng-if-demo></app-ng-if-demo>
+<app-ng-for-demo></app-ng-for-demo>
+<app-string-interpolation-demo></app-string-interpolation-demo>
+<app-two-way-binding-demo></app-two-way-binding-demo> -->
+
+<h1>To Do List</h1>
+<ul>
+    <li *ngFor="let item of todolist; let i = index">
+        <input type="checkbox" [(ngModel)]="item.completed" id={{i}}>
+        <label for={{i}}> {{item.task}} </label>
+             
+        <div *ngIf="item.completed">This Task is done! <br> <br>
+            <span *ngIf="item.completed">
+                <span *ngIf="item.task == 'Swim'">
+                    Venue1 : {{item.venue1}} <br> <br>
+                    Venue2 : {{item.venue2}} 
+                </span>
+            </span>
+        </div>
+    </li>
+    
+</ul>

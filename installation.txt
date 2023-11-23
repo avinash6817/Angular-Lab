@@ -1,0 +1,24 @@
+Angular : It is framework for creating client side application in Html,Css,Javascript/Typescript
+
+step 1 : install node . check version --> (node -v) or (node --version)
+step 2 : install Angular cli
+            npm install -g @angular/cli
+            npm install -g @angular/cli@latest
+
+            check using : npm list -global --depth 0
+            npm --> node package manager
+
+step 3 :
+            ng new my-first-project 
+            cd my-first-project 
+step 4 : 
+            serving your applictaion with
+            ng serve
+	    ng serve --open
+step 5 :
+            After successful completion, go to the browser
+                http://localhost/4200/
+
+
+For Creating the components
+	ng g c MyComponent/add-todo

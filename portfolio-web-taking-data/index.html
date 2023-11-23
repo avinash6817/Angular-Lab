@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    
+    <h1>Add a New Employee</h1>
+
+    <form id="postForm">
+        <label for="name">Name : </label>
+        <input type="text" id="name" name="name" required>
+
+        <br>
+
+        <label for="age">Age : </label>
+        <textarea id="age" name="age" rows="4" required></textarea>
+
+        <br>
+
+
+        <input type="submit" value="Submit">
+        <!-- <button type="submit">Submit</button> -->
+    </form>
+
+    <div id="postsContainer">
+        <!-- Display fetched posts here -->
+    </div>
+    
+
+    <script>
+        const fetchAllEmploye = async () => {
+            const postsContainer = document.getElementById("postsContainer");
+
+            const response = await fetch("http://localhost:5000/get-all-employe");
+            const employees = await response.json();
+
+            postsContainer.innerHTML = `<h2> All Employee </h2>`
+
+            employees.forEach(empl => {
+                const postElement = document.createElement('div');
+                postElement.innerHTML = `
+                                        <strong>${empl.name}</strong> 
+                                        <button onclick="deleteEmploye('${empl._id}')"> delete </button>
+                                        <button onclick="updateEmploye('${empl._id}','${empl.name}','${empl.age}')"> update </button>
+                                        <p>${empl.age}</p>
+                                        `;
+                postsContainer.appendChild(postElement);
+            })
+        }
+
+        const addEmployee = async () => {
+            const name = document.getElementById('name').value;
+            const age = document.getElementById('age').value;
+
+            // Send a POST request to the backend
+            const response = await fetch('http://localhost:5000/add-employe', {
+                method : 'POST',
+                headers : {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ name, age }),
+
+            });
+
+            const responseData = await response.json();
+            console.log(responseData);
+        }
+
+
+        async function deleteEmploye (empId) {
+            const flag = confirm("Are you sure");
+
+            if(flag){
+                const res = await fetch(`http://localhost:5000/delete-employe/${empId}`, {
+                    method : 'DELETE',
+                })
+    
+                const responseData = await res.json();
+                console.log(responseData)
+    
+                fetchAllEmploye();
+            }
+        }   
+
+        const updateEmploye = async (empId,currentName,currentAge) => {
+            const newName = prompt('Enter the new name:', currentName);
+            const newAge = prompt('Enter the new age :', currentAge);
+
+            const res = await fetch(`http://localhost:5000/update-employe/${empId}`,{
+                method : 'PUT',
+                headers : {
+                    'Content-Type' : 'application/json'
+                },
+                body : JSON.stringify({name : newName, age : newAge})
+            })
+
+            const responseData = await res.json();
+            console.log(responseData);
+
+            fetchAllEmploye();
+        }
+
+        document.addEventListener("DOMContentLoaded" ,() => {
+            const postForm = document.getElementById("postForm");
+
+            postForm.addEventListener("submit", (e) => {
+                e.preventDefault();
+
+                addEmployee();
+
+                postForm.reset();
+
+                fetchAllEmploye();
+            })
+
+            fetchAllEmploye();
+        })
+    </script>
+</body>
+</html>
