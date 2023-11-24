@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>To-Do App</title>
+
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 20px;
+    }
+
+    #todos {
+      list-style-type: none;
+      padding: 0;
+    }
+
+    .todo {
+      display: flex;
+      justify-content: space-between;
+      border-bottom: 1px solid #ccc;
+      padding: 10px;
+      margin-bottom: 10px;
+    }
+
+    .completed {
+      text-decoration: line-through;
+    }
+  </style>
+
+</head>
+<body>
+
+  <h1>To-Do App</h1>
+
+  <form id="todoForm">
+    <label for="task">New Task:</label>
+    <input type="text" id="task" required>
+    <button type="submit">Add Task</button>
+  </form>
+
+  <ul id="todos"></ul>
+
+  <script>
+    const todoForm = document.getElementById('todoForm');
+    const taskInput = document.getElementById('task');
+    const todosList = document.getElementById('todos');
+
+    async function fetchTodos() {
+      const response = await fetch('http://localhost:5000/todos');
+      const todos = await response.json();
+      displayTodos(todos);
+    }
+
+    // function displayTodos(todos) {
+    //     todosList.innerHTML = '';
+    //     todos.forEach(todo => {
+    //         const todoItem = document.createElement('li');
+    //         todoItem.className = 'todo';
+
+    //         const todoText = document.createElement('span');
+    //         todoText.textContent = todo.task;
+
+    //         const toggleButton = document.createElement('button');
+    //         toggleButton.textContent = 'Toggle';
+    //         toggleButton.addEventListener('click', () => toggleCompleted(todo._id, todo.completed));
+
+    //         todoItem.appendChild(todoText);
+    //         todoItem.appendChild(toggleButton);
+
+    //         if (todo.completed) {
+    //         todoItem.classList.add('completed');
+    //         }
+
+    //         todosList.appendChild(todoItem);
+    //     });
+    // }
+
+    function displayTodos(todos) {
+      todosList.innerHTML = '';
+      todos.forEach(todo => {
+        const todoItem = document.createElement('li');
+        todoItem.className = `todo ${todo.completed ? 'completed' : ''}`;
+        todoItem.innerHTML = `
+          <span>${todo.task}</span>
+          <button onclick="toggleCompleted('${todo._id}', ${todo.completed})">Toggle</button>
+        `;
+        todosList.appendChild(todoItem);
+      });
+    }
+
+
+    async function addTodo(event) {
+      event.preventDefault();
+
+      const task = taskInput.value;
+      if (!task) return;
+
+      await fetch('http://localhost:5000/todos', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ task, completed: false }),
+      });
+
+      taskInput.value = '';
+      fetchTodos();
+    }
+
+    async function toggleCompleted(todoId, completed) {
+      await fetch(`http://localhost:5000/todos/${todoId}`, {
+        method: 'PATCH',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ completed: !completed }),
+      });
+
+      fetchTodos();
+    }
+
+    todoForm.addEventListener('submit', addTodo);
+
+    // Fetch initial todos
+    fetchTodos();
+</script>
+
+</body>
+</html>
